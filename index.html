@@ -63,9 +63,10 @@
 	var rightPressed = false;
 	var leftPressed = false;
 
-	// event listeners for key pressed, key released
+	// event listeners for key pressed, key released, and mouse
 	document.addEventListener("keydown", keyDownHandler, false);
 	document.addEventListener("keyup", keyUpHandler, false);
+	document.addEventListener("mousemove", mouseMoveHandler, false);
 
 	function keyDownHandler(e) {
 		if (e.keyCode == 39) {
@@ -84,6 +85,15 @@
 			leftPressed = false;
 		}
 	}
+    
+    function mouseMoveHandler(e) {
+        var relativeX = e.clientX - canvas.offsetLeft;
+        
+        if (relativeX>0 && relativeX < canvas.width) {
+            paddleX = relativeX - paddleWidth/2;
+        }
+    }// end mouse move
+    
     
     function collisionDetection() {
         for(c=0; c<brickColumnCount; c++) {
@@ -110,13 +120,13 @@
     function drawScore() {
         ctx.font = "16px Arial";
         ctx.fillStyle = "#0095DD";
-        // parameters: string, score, coordinates
+        // parameters: string, coordinates
         ctx.fillText("Score: " + score, 8, 20);
     }
     
     function drawLives() {
         ctx.font = "16px Arial";
-        ctx.fillStyle = #0095DD";
+        ctx.fillStyle = "#0095DD";
         ctx.fillText("Lives: " + lives, canvas.width-65, 20);
     } 
 
@@ -185,8 +195,8 @@
                 else {
                     x = canvas.width/2;
                     y = canvas.height-30;
-                    dx = 2;
-                    dy = -2;
+                    dx = 3;
+                    dy = -3;
                     paddleX = (canvas.width - paddleWidth)/2;
                 }
 			}
@@ -209,18 +219,8 @@
         requestAnimationFrame(draw);
         
 	} // end draw
-
-	document.addEventListener("mousemove", mouseMoveHandler, false);
     
-    function mouseMoveHandler(e) {
-        var relativeX = e.clientX - canvas.offsetLeft;
-        
-        if (relativeX>0 && relativeX < canvas.width) {
-            paddleX = relativeX - paddleWidth/2;
-        }
-    }// end mouse move
-    
-    draw();
+   draw();
 
 	/* both parameters inclusive
 	function getRandomColor(min, max) {
